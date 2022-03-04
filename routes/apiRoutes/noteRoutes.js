@@ -1,29 +1,18 @@
-const { filterByQuery, findById, createNewNote, validateNote } = require('../../Develop/db/db.json');
-const { notes } = require('../../Develop/db/db.json');
+const { handleNoteSave } = require('../../Develop/public/assets/js/index');
+const notes = require('../../Develop/db/db.json');
 const router = require('express').Router();
 
 router.get('/notes', (req, res) => {
-    let results = notes;
     if (req.query) {
-        results = filterByQuery(req.query, results);
-    }
-    res.json(results);
-});
-router.get('/notes/:id', (req, res) => {
-    const result = findById(req.params.id, notes);
-    if (result) {
-        res.json(result);
-    } else {
-        res.send(404);
+        res.send(notes);
     }
 });
+
 router.post('/notes', (req, res) => {
     req.body.id = notes.length.toString();
 
-    if (!validateNote(req.body)) {
-        res.status(400).send('The note is not properly formatted.');
-    } else {
-        const note = createNewNote(req.body, notes);
+    if(req.body) {
+        const note = handleNoteSave(req.body, notes);
         res.json(note);
     }
 });

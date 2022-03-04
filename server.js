@@ -10,9 +10,10 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
+console.log(__dirname);
+app.use(express.static(__dirname + '/Develop/public'));
 app.use('/api', apiRoutes);
 app.use('/', htmlRoutes);
-app.use(express.static('public'));
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`)
